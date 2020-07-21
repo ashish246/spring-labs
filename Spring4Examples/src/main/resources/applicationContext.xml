@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<!-- For UTIL Constants example -->
+	<util:constant id="MANAGER"
+		static-field="com.spring.utilconstants.EmployeeDTO.MANAGER" />
+
+	<util:constant id="DIRECTOR"
+		static-field="com.spring.utilconstants.EmployeeDTO.DIRECTOR" />
+
+	<!-- Use the static final bean constants here -->
+	<bean name="employeeTypeWrapper" class="com.spring.utilconstants.EmployeeTypeWrapper">
+		<property name="manager" ref="MANAGER" />
+		<property name="director" ref="DIRECTOR" />
+	</bean>
+
+	<!-- For Post Processor example -->
+	<bean id="customBeanPostProcessor" class="com.spring.postprocessor.CustomBeanPostProcessor" />
+
+	<bean id="dao" class="com.spring.utilconstants.EmployeeDTO"
+		init-method="initBean" destroy-method="destroyBean" />
+
+	<!-- For Message Source example -->
+	<bean name="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>
+		</property>
+	</bean>
+	<bean id="messageTest" class="com.spring.messagesource.EmployeeDTO" />
+
+	<bean id="CustomerBean" class="com.spring.innerbean.Customer">
+		<property name="person">
+			<bean class="com.spring.innerbean.Person">
+				<property name="name" value="ashish" />
+				<property name="address" value="address1" />
+				<property name="age" value="28" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- <bean id="CustomerBean" class="com.mkyong.common.Customer"> <constructor-arg> 
+		<bean class="com.mkyong.common.Person"> <property name="name" value="mkyong" 
+		/> <property name="address" value="address1" /> <property name="age" value="28" 
+		/> </bean> </constructor-arg> </bean> -->
+
+</beans>

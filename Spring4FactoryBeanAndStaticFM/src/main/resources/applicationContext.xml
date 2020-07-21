@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="manager" class="com.spring.factorybean.EmployeeFactoryBean">
+		<property name="designation" value="Manager" />
+	</bean>
+
+	<bean id="director" class="com.spring.factorybean.EmployeeFactoryBean">
+		<property name="designation" value="Director" />
+	</bean>
+
+	<!-- Using Static Factory Method approach of creating bean instances -->
+	<bean id="manager-static" class="com.spring.staticfactorymethod.EmployeeFactory"
+		factory-method="createEmployeeOfType">
+		<constructor-arg value="manager" />
+	</bean>
+
+	<bean id="director-static" class="com.spring.staticfactorymethod.EmployeeFactory"
+		factory-method="createEmployeeOfType">
+		<constructor-arg value="director" />
+	</bean>
+
+</beans>

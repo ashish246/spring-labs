@@ -1,0 +1,85 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="customerService" class="com.spring.aop.service.CustomerService">
+		<property name="name" value="Ashish Tripathi" />
+		<property name="url" value="http://www.google.com" />
+	</bean>
+
+	<bean id="hijackBeforeMethodBean" class="com.spring.aop.advisors.HijackBeforeMethod" />
+
+	<bean id="hijackAfterMethodBean" class="com.spring.aop.advisors.HijackAfterMethod" />
+
+	<bean id="hijackThrowExceptionBean" class="com.spring.aop.advisors.HijackThrowException" />
+
+	<bean id="hijackAroundMethodBeanAdvice" class="com.spring.aop.advisors.HijackAroundMethod" />
+
+	<!-- Name Pointcut -->
+	<bean id="customerPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedName" value="printName" />
+	</bean>
+
+	<!-- Create a DefaultPointcutAdvisor advisor bean, and associate both advice 
+		and pointcut. -->
+	<bean id="customerAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="pointcut" ref="customerPointcut" />
+		<property name="advice" ref="hijackAroundMethodBeanAdvice" />
+	</bean>
+
+	<!-- Spring comes with PointcutAdvisor class to save your work to declare 
+		advisor and pointcut into different beans, you can use NameMatchMethodPointcutAdvisor 
+		to combine both into a single bean. -->
+	<bean id="customerNamedPointcutAdvisor"
+		class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<property name="mappedName" value="printName" />
+		<property name="advice" ref="hijackAroundMethodBeanAdvice" />
+	</bean>
+	<bean id="customerRegexPointcutAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="patterns">
+			<list>
+				<value>.*URL.*</value>
+			</list>
+		</property>
+		<property name="advice" ref="hijackAroundMethodBeanAdvice" />
+	</bean>
+
+
+	<bean id="customerServiceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="customerService" />
+		<property name="interceptorNames">
+			<list>
+				<!-- Replace the proxy’s ‘interceptorNames’ to ‘customerAdvisor’ (it 
+					was ‘hijackAroundMethodBeanAdvice’). -->
+				<!-- <value>hijackAroundMethodBeanAdvice</value> -->
+				<value>customerAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- In auto proxy mechanism, you just need to create a BeanNameAutoProxyCreator, 
+		and include all your beans (via bean name, or regular expression name) and 
+		‘advisor’ into a single unit. Now, you can get the bean via original name 
+		“customerService”, you dun even know this bean has been proxies. -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>customerAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- This DefaultAdvisorAutoProxyCreator is extremely powerful, if any of 
+		the beans is matched by an advisor, Spring will create a proxy for it automatically. 
+		<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" 
+		/> -->
+
+</beans>

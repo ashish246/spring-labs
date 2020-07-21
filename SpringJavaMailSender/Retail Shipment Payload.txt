@@ -1,0 +1,147 @@
+{
+    "contract_id": "9999999999",
+    "shipments": [
+        {
+            "shipment_id": "",
+            "customer_reference_1": "reference 1",
+            "customer_reference_2": "reference 1",
+			"email_tracking_enabled": true,
+            "lodgement": {
+                "name": "ATTN: Stevens",
+                "business_name": "Hello World Pty Ltd",
+                "lines": [
+                    "Corporate HQ",
+                    "123 Fake St"
+                ],
+                "suburb": "Port Melbourne",
+                "postcode": "1500",
+                "state": "VIC",
+				"email": "xyz@auspost.com.au",
+				"mobile": "04697111148"
+            },
+            "destination": {
+                "name": "ATTN: Phil",
+				"type": "PARCEL_LOCKER",
+                "business_name": "Lorem ipsum dolor sit amet",
+                "delivery_instructions": "delivery instruction text",
+                "lines": [
+                    "111 Bourke Street"
+                ],
+                "suburb": "Melbourne",
+                "postcode": "7151",
+                "state": "VIC",
+				"apcn": "0123456789",
+				"email": "abcd@auspost.com.au",
+				"mobile": "04697000048"
+            },
+            "items": [
+                {
+                    "item_reference": "OPTIONAL NEW Item Reference",
+                    "item_description": "OPTIONAL NEW Item description",
+                    "length": "20",
+					"height": "20",
+					"width": "20",
+					"weight": "62",
+					"features": {
+						"EXTRA_COVER": {
+							"attributes": {
+								"amount": "3000.00"
+							}
+						},
+						"SIGNATURE_ON_DELIVERY": {
+							"attributes": {}
+						}
+					},
+                    "product_id": "B31",
+                    "contains_dangerous_goods": false
+                }
+            ]
+        }
+    ]
+}
+
+============================================================Pricing call
+http://ebsi-hp4540-07.eperium_india:86/INTERSHOP/rest/WFS/AusPostCOM-PCC-Site/-/locations/9999999999/items
+
+{
+    "destination": {
+        "postcode": 7151
+    },
+	 "lodgement": {
+        "postcode": 1500
+    },
+    "items": [
+        {
+            "length": "20",
+            "height": "20",
+            "width": "20",
+            "weight": "62",
+            "features": {
+                "TRANSIT_COVER": {
+                    "attributes": {
+                        "amount": "3000.00"
+                    }
+                },
+				"EXTRA_COVER": {
+                    "attributes": {
+                        "amount": "3000.00"
+                    }
+                },
+                "SIGNATURE_ON_DELIVERY": {
+                    "attributes": {}
+                }
+            },
+            "contains_dangerous_goods": false
+        }
+    ]
+}
+
+============================================================
+    "postage_products": [ 
+    {
+       "group": "Parcel Post",
+        "type": "Parcel Post Flat Rate Satchel 500g (Small)",
+        "contract": {
+            "volumetric_pricing": false,
+            "valid_to": "2015-04-29",
+            "valid_from": "2014-02-23"
+                },
+        "characteristics": {   //Require magic data for this…
+            "chrg_code": "T28S",
+            "descr": "PARCEL POST W/SIGNATURE",
+            "std_barcode_prod_code": "62",
+            "is_dngrs_goods_allwd": false,
+            "is_track_adv_elgbl": true,
+            "template_name": "Eparcel",
+            "template_display_name": "",
+            "group_display_name": "",
+            "signature_on_delivery_option": false,
+            "authority_to_leave_option": true
+        },
+        "charge_code": "BE1P05",
+        "packaging_type": "CONFORMED_SATCHELS",
+        "commodity_code" : "P05"    //indicate the packaging weight band
+    }]
+
+	
+	
+	{
+    "destination": {
+        "postcode": 2134 
+    },
+    "items": [{
+        "product_ids": ["B31", "B1P0"],
+        "length": "20",
+        "height": "20",
+        "width": "20",
+        "weight": "62",
+        "features": {
+            "TRANSIT_COVER": {  
+                 "attributes": {
+                    "amount": 3000.00
+                }
+            }                       
+        },
+    }]
+}
+===============================================================
